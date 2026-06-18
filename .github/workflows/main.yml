@@ -1,32 +1,36 @@
-(11:28) Luiz Gabriel Sarmento Pereira: name: Generate snake animation
+name: Generate snake animation
 
 on:
   schedule:
     # executa todos os dias à meia-noite (UTC)
     - cron: "0 0 * * *"
+  
   # permite executar manualmente a partir da aba Actions
   workflow_dispatch:
+  
   # também gera uma nova cobra a cada push no ramo principal
   push:
     branches:
-      - main
+    - main
 
 # 🔥 ADICIONE ESTA LINHA PARA DAR PERMISSÃO DE ESCRITA
 permissions:
-  contents: dark
+  contents: write
 
 jobs:
   generate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Generate snake.svg
         uses: Platane/snk@v3
         with:
           github_user_name: ${{ github.repository_owner }}
-          outputs: dist/snake.svg?palette=github-dark
-          
+          outputs: |
+            dist/github-contribution-grid-snake.svg
+            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+
       - name: Push snake.svg to the output branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
